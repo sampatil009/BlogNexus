@@ -1,10 +1,10 @@
-
 import React, { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
 import { Bot, Send, Circle, RefreshCw, ZapIcon, XIcon } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface Message {
   id: string;
@@ -28,7 +28,6 @@ const AiAssistant: React.FC = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
   
-  // Auto-scroll to bottom whenever messages change
   useEffect(() => {
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
@@ -38,7 +37,6 @@ const AiAssistant: React.FC = () => {
   const handleSend = () => {
     if (!inputValue.trim()) return;
     
-    // Add user message
     const userMessage: Message = {
       id: Date.now().toString(),
       content: inputValue,
@@ -50,7 +48,6 @@ const AiAssistant: React.FC = () => {
     setInputValue("");
     setIsLoading(true);
     
-    // Process the message and generate response
     setTimeout(() => {
       generateResponse(inputValue);
       setIsLoading(false);
@@ -61,7 +58,6 @@ const AiAssistant: React.FC = () => {
     const lowerQuery = query.toLowerCase();
     let response = "";
     
-    // Content ideas generation
     if (lowerQuery.includes("idea") || lowerQuery.includes("topic") || lowerQuery.includes("what should i write")) {
       const topics = [
         "10 Ways AI is Transforming Content Creation in 2025",
@@ -79,23 +75,18 @@ const AiAssistant: React.FC = () => {
       const randomTopics = getRandomItems(topics, 4);
       response = `Here are some blog post ideas you might like:\n\n1. "${randomTopics[0]}"\n2. "${randomTopics[1]}"\n3. "${randomTopics[2]}"\n4. "${randomTopics[3]}"\n\nWould you like more specific ideas on any of these topics?`;
     } 
-    // SEO optimization
     else if (lowerQuery.includes("seo") || lowerQuery.includes("keyword") || lowerQuery.includes("rank")) {
       response = "To improve your SEO, I recommend:\n\n1. Use your primary keyword in the title, first paragraph, and at least one heading\n2. Include related keywords throughout your content naturally\n3. Ensure your content is comprehensive (1500+ words for competitive topics)\n4. Use descriptive image alt text\n5. Create internal links to your other relevant content\n6. Focus on readability with short paragraphs and clear headings\n\nWould you like me to analyze a specific aspect of your SEO strategy?";
     } 
-    // Writer's block help
     else if (lowerQuery.includes("writer's block") || lowerQuery.includes("stuck") || lowerQuery.includes("can't write")) {
       response = "Writer's block happens to everyone! Here are some techniques to overcome it:\n\n1. Free write for 10 minutes without editing - just get words on the page\n2. Change your environment - try writing in a new location\n3. Start in the middle - you don't have to begin with the introduction\n4. Write the outline first, then fill in the sections\n5. Interview an imaginary expert on your topic\n6. Set a timer for 25 minutes and commit to writing until it goes off\n\nWhich approach would you like to try?";
     }
-    // Content improvement
     else if (lowerQuery.includes("improve") || lowerQuery.includes("better") || lowerQuery.includes("enhance")) {
       response = "To enhance your content, consider:\n\n1. Add real-world examples to illustrate your points\n2. Include data and statistics to support your claims\n3. Use storytelling techniques to engage readers emotionally\n4. Incorporate multimedia elements (images, videos, infographics)\n5. Add a strong call-to-action at the end\n6. Create a compelling headline that promises value\n\nWould you like suggestions for any specific part of your content?";
     }
-    // Headline assistance
     else if (lowerQuery.includes("headline") || lowerQuery.includes("title")) {
       response = "Creating compelling headlines is crucial! Try these formulas:\n\n1. How to [Achieve Desired Result] Without [Negative Thing]\n2. [Number] Proven Ways to [Achieve Desired Outcome]\n3. The Ultimate Guide to [Topic]: Everything You Need to Know\n4. What Nobody Tells You About [Topic]\n5. Why [Common Belief] Is Wrong and What to Do Instead\n\nWould you like me to suggest specific headlines based on your topic?";
     }
-    // Default response
     else {
       response = "I'm here to help with your content creation! I can:\n\n• Suggest blog post ideas and topics\n• Provide SEO optimization tips\n• Help overcome writer's block\n• Offer content improvement suggestions\n• Create compelling headlines\n• Develop content outlines\n\nWhat specific aspect of content creation can I assist you with today?";
     }
@@ -110,7 +101,6 @@ const AiAssistant: React.FC = () => {
     setMessages(prevMessages => [...prevMessages, botMessage]);
   };
 
-  // Helper function to get random items from an array
   const getRandomItems = (array: string[], count: number) => {
     const shuffled = [...array].sort(() => 0.5 - Math.random());
     return shuffled.slice(0, count);
@@ -154,38 +144,40 @@ const AiAssistant: React.FC = () => {
             </div>
           </CardHeader>
           <CardContent className="flex-1 flex flex-col p-0">
-            <div className="flex-1 overflow-y-auto p-4 space-y-4">
-              {messages.map((message) => (
-                <div
-                  key={message.id}
-                  className={`flex ${
-                    message.sender === 'user' ? 'justify-end' : 'justify-start'
-                  }`}
-                >
+            <ScrollArea className="flex-1 overflow-y-auto p-4">
+              <div className="space-y-4">
+                {messages.map((message) => (
                   <div
-                    className={`max-w-[80%] p-3 rounded-lg ${
-                      message.sender === 'user'
-                        ? 'bg-brand text-white rounded-br-none'
-                        : 'bg-muted rounded-bl-none'
+                    key={message.id}
+                    className={`flex ${
+                      message.sender === 'user' ? 'justify-end' : 'justify-start'
                     }`}
                   >
-                    <p className="whitespace-pre-line text-sm">{message.content}</p>
-                  </div>
-                </div>
-              ))}
-              {isLoading && (
-                <div className="flex justify-start">
-                  <div className="bg-muted p-3 rounded-lg rounded-bl-none max-w-[80%]">
-                    <div className="flex items-center gap-1.5">
-                      <Circle className="h-2 w-2 animate-pulse" />
-                      <Circle className="h-2 w-2 animate-pulse delay-150" />
-                      <Circle className="h-2 w-2 animate-pulse delay-300" />
+                    <div
+                      className={`max-w-[80%] p-3 rounded-lg ${
+                        message.sender === 'user'
+                          ? 'bg-brand text-white rounded-br-none'
+                          : 'bg-muted rounded-bl-none'
+                      }`}
+                    >
+                      <p className="whitespace-pre-line text-sm">{message.content}</p>
                     </div>
                   </div>
-                </div>
-              )}
-              <div ref={messagesEndRef} />
-            </div>
+                ))}
+                {isLoading && (
+                  <div className="flex justify-start">
+                    <div className="bg-muted p-3 rounded-lg rounded-bl-none max-w-[80%]">
+                      <div className="flex items-center gap-1.5">
+                        <Circle className="h-2 w-2 animate-pulse" />
+                        <Circle className="h-2 w-2 animate-pulse delay-150" />
+                        <Circle className="h-2 w-2 animate-pulse delay-300" />
+                      </div>
+                    </div>
+                  </div>
+                )}
+                <div ref={messagesEndRef} />
+              </div>
+            </ScrollArea>
 
             <div className="border-t p-3">
               <div className="relative">
