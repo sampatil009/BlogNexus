@@ -211,79 +211,81 @@ const Comments = () => {
                     </span>
                   </TabsTrigger>
                 </TabsList>
-                <div className="mt-6">
-                  {getCommentsForTab(activeTab).map((comment) => (
-                    <div key={comment.id} className="py-4 border-b last:border-b-0">
-                      <div className="flex justify-between">
-                        <div className="flex gap-4">
-                          <Avatar>
-                            <AvatarImage src={comment.avatar} />
-                            <AvatarFallback>{comment.author.charAt(0)}</AvatarFallback>
-                          </Avatar>
-                          <div>
-                            <div className="flex items-center gap-2">
-                              <h3 className="font-medium text-sm">
-                                {comment.author}
-                                {comment.isSpam && (
-                                  <Badge variant="destructive" className="ml-2 py-0 px-1.5">
-                                    <Shield className="h-3 w-3 mr-1" />
-                                    Spam
-                                  </Badge>
-                                )}
-                              </h3>
-                              <span className="text-xs text-muted-foreground">
-                                {comment.date}
-                              </span>
-                            </div>
-                            <p className="mt-1">{comment.content}</p>
-                            <div className="mt-2 flex items-center gap-4">
-                              <span className="text-xs text-muted-foreground flex items-center">
-                                <MessageCircle className="h-3 w-3 mr-1" />
-                                {comment.post}
-                              </span>
-                              <span className="text-xs text-muted-foreground flex items-center">
-                                <ThumbsUp className="h-3 w-3 mr-1" />
-                                {comment.likes} likes
-                              </span>
-                              <span className="text-xs text-muted-foreground flex items-center">
-                                <ArrowUp className="h-3 w-3 mr-1" />
-                                {comment.replies} replies
-                              </span>
+                <TabsContent value={activeTab}>
+                  <div className="mt-6">
+                    {getCommentsForTab(activeTab).map((comment) => (
+                      <div key={comment.id} className="py-4 border-b last:border-b-0">
+                        <div className="flex justify-between">
+                          <div className="flex gap-4">
+                            <Avatar>
+                              <AvatarImage src={comment.avatar} />
+                              <AvatarFallback>{comment.author.charAt(0)}</AvatarFallback>
+                            </Avatar>
+                            <div>
+                              <div className="flex items-center gap-2">
+                                <h3 className="font-medium text-sm">
+                                  {comment.author}
+                                  {comment.isSpam && (
+                                    <Badge variant="destructive" className="ml-2 py-0 px-1.5">
+                                      <Shield className="h-3 w-3 mr-1" />
+                                      Spam
+                                    </Badge>
+                                  )}
+                                </h3>
+                                <span className="text-xs text-muted-foreground">
+                                  {comment.date}
+                                </span>
+                              </div>
+                              <p className="mt-1">{comment.content}</p>
+                              <div className="mt-2 flex items-center gap-4">
+                                <span className="text-xs text-muted-foreground flex items-center">
+                                  <MessageCircle className="h-3 w-3 mr-1" />
+                                  {comment.post}
+                                </span>
+                                <span className="text-xs text-muted-foreground flex items-center">
+                                  <ThumbsUp className="h-3 w-3 mr-1" />
+                                  {comment.likes} likes
+                                </span>
+                                <span className="text-xs text-muted-foreground flex items-center">
+                                  <ArrowUp className="h-3 w-3 mr-1" />
+                                  {comment.replies} replies
+                                </span>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                        <div>
-                          <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                              <Button variant="ghost" size="icon">
-                                <MoreVertical className="h-4 w-4" />
-                              </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end">
-                              <DropdownMenuItem onClick={() => handleApproveComment(comment.id)}>
-                                <CheckCircle className="h-4 w-4 mr-2" />
-                                Approve
-                              </DropdownMenuItem>
-                              <DropdownMenuItem onClick={() => handleMarkAsSpam(comment.id)}>
-                                <Flag className="h-4 w-4 mr-2" />
-                                Mark as Spam
-                              </DropdownMenuItem>
-                              <DropdownMenuItem>
-                                <Reply className="h-4 w-4 mr-2" />
-                                Reply
-                              </DropdownMenuItem>
-                              <DropdownMenuItem onClick={() => handleDeleteComment(comment.id)}>
-                                <Trash2 className="h-4 w-4 mr-2" />
-                                Delete
-                              </DropdownMenuItem>
-                            </DropdownMenuContent>
-                          </DropdownMenu>
+                          <div>
+                            <DropdownMenu>
+                              <DropdownMenuTrigger asChild>
+                                <Button variant="ghost" size="icon">
+                                  <MoreVertical className="h-4 w-4" />
+                                </Button>
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent align="end">
+                                <DropdownMenuItem onClick={() => handleApproveComment(comment.id)}>
+                                  <CheckCircle className="h-4 w-4 mr-2" />
+                                  Approve
+                                </DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => handleMarkAsSpam(comment.id)}>
+                                  <Flag className="h-4 w-4 mr-2" />
+                                  Mark as Spam
+                                </DropdownMenuItem>
+                                <DropdownMenuItem>
+                                  <Reply className="h-4 w-4 mr-2" />
+                                  Reply
+                                </DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => handleDeleteComment(comment.id)}>
+                                  <Trash2 className="h-4 w-4 mr-2" />
+                                  Delete
+                                </DropdownMenuItem>
+                              </DropdownMenuContent>
+                            </DropdownMenu>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
-                </div>
-              </TabsContent>
+                    ))}
+                  </div>
+                </TabsContent>
+              </Tabs>
             </CardContent>
           </Card>
 
