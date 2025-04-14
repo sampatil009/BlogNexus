@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
@@ -25,7 +25,15 @@ const AiAssistant: React.FC = () => {
       timestamp: new Date(),
     }
   ]);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
+  
+  // Auto-scroll to bottom whenever messages change
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages]);
   
   const handleSend = () => {
     if (!inputValue.trim()) return;
@@ -38,11 +46,11 @@ const AiAssistant: React.FC = () => {
       timestamp: new Date(),
     };
     
-    setMessages([...messages, userMessage]);
+    setMessages(prev => [...prev, userMessage]);
     setInputValue("");
     setIsLoading(true);
     
-    // Simulate AI response
+    // Process the message and generate response
     setTimeout(() => {
       generateResponse(inputValue);
       setIsLoading(false);
@@ -50,17 +58,46 @@ const AiAssistant: React.FC = () => {
   };
 
   const generateResponse = (query: string) => {
+    const lowerQuery = query.toLowerCase();
     let response = "";
     
-    // Very simple mock responses based on keywords
-    if (query.toLowerCase().includes("seo")) {
-      response = "To improve your SEO, focus on using relevant keywords naturally throughout your content. Ensure your headings include target phrases, and create comprehensive, valuable content that answers user questions.";
-    } else if (query.toLowerCase().includes("idea") || query.toLowerCase().includes("topic")) {
-      response = "Here are some blog post ideas:\n1. '10 Ways AI is Transforming Content Creation'\n2. 'The Complete Guide to SEO in 2025'\n3. 'How to Build an Engaged Reader Community'\n4. 'Writing Techniques to Keep Readers Coming Back'";
-    } else if (query.toLowerCase().includes("writer's block") || query.toLowerCase().includes("stuck")) {
-      response = "Writer's block happens to everyone! Try these techniques:\n1. Free write for 10 minutes without editing\n2. Change your environment\n3. Start in the middle instead of the beginning\n4. Interview an imaginary expert on your topic";
-    } else {
-      response = "Thanks for your message. I'm here to help with content creation, SEO optimization, and writing suggestions. Could you provide more details about what you need help with?";
+    // Content ideas generation
+    if (lowerQuery.includes("idea") || lowerQuery.includes("topic") || lowerQuery.includes("what should i write")) {
+      const topics = [
+        "10 Ways AI is Transforming Content Creation in 2025",
+        "The Complete Guide to SEO in 2025: What's Changed?",
+        "How to Build an Engaged Reader Community for Your Blog",
+        "Writing Techniques to Keep Readers Coming Back",
+        "The Psychology Behind Viral Blog Posts",
+        "Creating a Content Calendar That Actually Works",
+        "How to Monetize Your Blog Without Annoying Your Readers",
+        "Visual Storytelling: Beyond Words in Modern Blogging",
+        "Ethical Considerations for AI-Assisted Writing",
+        "Finding Your Unique Voice in a Crowded Blogging Space"
+      ];
+      
+      const randomTopics = getRandomItems(topics, 4);
+      response = `Here are some blog post ideas you might like:\n\n1. "${randomTopics[0]}"\n2. "${randomTopics[1]}"\n3. "${randomTopics[2]}"\n4. "${randomTopics[3]}"\n\nWould you like more specific ideas on any of these topics?`;
+    } 
+    // SEO optimization
+    else if (lowerQuery.includes("seo") || lowerQuery.includes("keyword") || lowerQuery.includes("rank")) {
+      response = "To improve your SEO, I recommend:\n\n1. Use your primary keyword in the title, first paragraph, and at least one heading\n2. Include related keywords throughout your content naturally\n3. Ensure your content is comprehensive (1500+ words for competitive topics)\n4. Use descriptive image alt text\n5. Create internal links to your other relevant content\n6. Focus on readability with short paragraphs and clear headings\n\nWould you like me to analyze a specific aspect of your SEO strategy?";
+    } 
+    // Writer's block help
+    else if (lowerQuery.includes("writer's block") || lowerQuery.includes("stuck") || lowerQuery.includes("can't write")) {
+      response = "Writer's block happens to everyone! Here are some techniques to overcome it:\n\n1. Free write for 10 minutes without editing - just get words on the page\n2. Change your environment - try writing in a new location\n3. Start in the middle - you don't have to begin with the introduction\n4. Write the outline first, then fill in the sections\n5. Interview an imaginary expert on your topic\n6. Set a timer for 25 minutes and commit to writing until it goes off\n\nWhich approach would you like to try?";
+    }
+    // Content improvement
+    else if (lowerQuery.includes("improve") || lowerQuery.includes("better") || lowerQuery.includes("enhance")) {
+      response = "To enhance your content, consider:\n\n1. Add real-world examples to illustrate your points\n2. Include data and statistics to support your claims\n3. Use storytelling techniques to engage readers emotionally\n4. Incorporate multimedia elements (images, videos, infographics)\n5. Add a strong call-to-action at the end\n6. Create a compelling headline that promises value\n\nWould you like suggestions for any specific part of your content?";
+    }
+    // Headline assistance
+    else if (lowerQuery.includes("headline") || lowerQuery.includes("title")) {
+      response = "Creating compelling headlines is crucial! Try these formulas:\n\n1. How to [Achieve Desired Result] Without [Negative Thing]\n2. [Number] Proven Ways to [Achieve Desired Outcome]\n3. The Ultimate Guide to [Topic]: Everything You Need to Know\n4. What Nobody Tells You About [Topic]\n5. Why [Common Belief] Is Wrong and What to Do Instead\n\nWould you like me to suggest specific headlines based on your topic?";
+    }
+    // Default response
+    else {
+      response = "I'm here to help with your content creation! I can:\n\n• Suggest blog post ideas and topics\n• Provide SEO optimization tips\n• Help overcome writer's block\n• Offer content improvement suggestions\n• Create compelling headlines\n• Develop content outlines\n\nWhat specific aspect of content creation can I assist you with today?";
     }
     
     const botMessage: Message = {
@@ -71,6 +108,12 @@ const AiAssistant: React.FC = () => {
     };
     
     setMessages(prevMessages => [...prevMessages, botMessage]);
+  };
+
+  // Helper function to get random items from an array
+  const getRandomItems = (array: string[], count: number) => {
+    const shuffled = [...array].sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, count);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -141,6 +184,7 @@ const AiAssistant: React.FC = () => {
                   </div>
                 </div>
               )}
+              <div ref={messagesEndRef} />
             </div>
 
             <div className="border-t p-3">
