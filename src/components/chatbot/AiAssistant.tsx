@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -143,9 +144,9 @@ const AiAssistant: React.FC = () => {
               </Button>
             </div>
           </CardHeader>
-          <CardContent className="flex-1 flex flex-col p-0">
-            <ScrollArea className="flex-1 overflow-y-auto p-4">
-              <div className="space-y-4">
+          <CardContent className="flex-1 flex flex-col p-0 overflow-hidden">
+            <ScrollArea className="flex-1 h-[calc(100%-80px)]" type="always">
+              <div className="space-y-4 p-4">
                 {messages.map((message) => (
                   <div
                     key={message.id}
