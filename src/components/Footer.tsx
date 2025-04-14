@@ -8,8 +8,8 @@ const Footer: React.FC = () => {
         <div className="flex flex-col md:flex-row justify-between items-center">
           <div className="flex flex-col items-center md:items-start mb-4 md:mb-0">
             <p className="text-lg font-semibold">
-              <span className="text-brand">Scribe</span>
-              <span className="text-foreground">AI</span>
+              <span className="text-brand">Blog</span>
+              <span className="text-foreground">Nexus</span>
             </p>
             <p className="text-muted-foreground text-sm">
               The AI-powered blogging platform
@@ -37,7 +37,7 @@ const Footer: React.FC = () => {
         
         <div className="border-t mt-6 pt-6 flex flex-col md:flex-row justify-between items-center">
           <p className="text-muted-foreground text-sm">
-            © 2025 ScribeAI. All rights reserved.
+            © 2025 BlogNexus. All rights reserved.
           </p>
           
           <div className="flex gap-4 mt-4 md:mt-0">

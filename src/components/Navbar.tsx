@@ -61,8 +61,8 @@ const Navbar: React.FC<NavbarProps> = ({ className }) => {
           <div className="flex items-center gap-6">
             <Link to="/home" className="flex items-center space-x-2">
               <span className="font-bold text-xl">
-                <span className="text-brand">Scribe</span>
-                <span className="text-foreground">AI</span>
+                <span className="text-brand">Blog</span>
+                <span className="text-foreground">Nexus</span>
               </span>
             </Link>
 

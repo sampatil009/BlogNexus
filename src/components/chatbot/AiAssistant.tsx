@@ -20,7 +20,7 @@ const AiAssistant: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '0',
-      content: "Hi there! I'm your AI writing assistant. How can I help you today? I can suggest content ideas, help with writer's block, optimize your SEO, and more.",
+      content: "Hi there! I'm your AI writing assistant from BlogNexus. How can I help you today? I can suggest content ideas, help with writer's block, optimize your SEO, and more.",
       sender: 'bot',
       timestamp: new Date(),
     }
@@ -98,7 +98,7 @@ const AiAssistant: React.FC = () => {
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Bot className="h-5 w-5" />
-                <CardTitle className="text-base font-medium">AI Assistant</CardTitle>
+                <CardTitle className="text-base font-medium">BlogNexus Assistant</CardTitle>
               </div>
               <Button 
                 variant="ghost" 

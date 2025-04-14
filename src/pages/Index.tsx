@@ -24,7 +24,7 @@ const Index = () => {
           <div className="flex-1 space-y-8 md:mt-8">
             <div className="space-y-2">
               <h1 className="hero-text">
-                <span className="gradient-text">ScribeAI</span> <br />
+                <span className="gradient-text">BlogNexus</span> <br />
                 Elevate Your Content
               </h1>
               <p className="text-xl text-muted-foreground max-w-[600px]">

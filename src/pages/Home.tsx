@@ -6,8 +6,11 @@ import AiAssistant from "@/components/chatbot/AiAssistant";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { BookOpen, FileEdit, BarChart3, MessageSquare, Award, TrendingUp } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
+  const navigate = useNavigate();
+  
   // Sample data for dashboard
   const recentPosts = [
     { id: 1, title: "Getting Started with AI Writing", date: "2 days ago", views: 254 },
@@ -28,7 +31,7 @@ const Home = () => {
       <main className="flex-1 container px-4 md:px-6 py-6 md:py-10">
         <div className="space-y-8">
           <div>
-            <h1 className="text-3xl font-bold mb-2">Welcome to ScribeAI</h1>
+            <h1 className="text-3xl font-bold mb-2">Welcome to BlogNexus</h1>
             <p className="text-muted-foreground">Your AI-powered blogging dashboard</p>
           </div>
 
@@ -72,12 +75,12 @@ const Home = () => {
                           </span>
                         </div>
                       </div>
-                      <Button variant="ghost" size="sm">View</Button>
+                      <Button variant="ghost" size="sm" onClick={() => navigate(`/posts/${post.id}`)}>View</Button>
                     </div>
                   ))}
                 </div>
                 <div className="mt-6">
-                  <Button className="w-full bg-brand hover:bg-brand-dark">
+                  <Button className="w-full bg-brand hover:bg-brand-dark" onClick={() => navigate("/create-post")}>
                     <FileEdit className="mr-2 h-4 w-4" />
                     Create New Post
                   </Button>
@@ -93,15 +96,15 @@ const Home = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                <Button variant="outline" className="w-full justify-start">
+                <Button variant="outline" className="w-full justify-start" onClick={() => navigate("/posts")}>
                   <BookOpen className="mr-2 h-4 w-4" />
                   Browse All Posts
                 </Button>
-                <Button variant="outline" className="w-full justify-start">
+                <Button variant="outline" className="w-full justify-start" onClick={() => navigate("/comments")}>
                   <MessageSquare className="mr-2 h-4 w-4" />
                   Review Comments
                 </Button>
-                <Button variant="outline" className="w-full justify-start">
+                <Button variant="outline" className="w-full justify-start" onClick={() => navigate("/statistics")}>
                   <BarChart3 className="mr-2 h-4 w-4" />
                   View Analytics
                 </Button>
